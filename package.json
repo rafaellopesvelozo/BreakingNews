@@ -1,0 +1,18 @@
+{
+  "name": "brakingnews",
+  "version": "1.0.0",
+  "description": "API for SPA Breaking News",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+
+  },
+  "keywords": [],
+  "author": "Rafa",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.20"
+  }
+}
