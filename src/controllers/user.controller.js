@@ -1,23 +1,31 @@
-const create = (req, res) => {
-    const {name, username, email, password, avatar, background} = req.body
+const userService = require("../services/user.service");
 
-    if( !name || !username || !email || !password || !avatar ||!background ){
-        res.status(400).send({message: "submuit all fields for registration"})
-    }
+const create = async (req, res) => {
+  const { name, username, email, password, avatar, background } = req.body;
 
-    res.status(201).send({
-        message: "user created successfully",
-        user:{
-            name,
-            username,
-            email,
-            avatar,
-            background,
-        },
-      
-    })
+  if (!name || !username || !email || !password || !avatar || !background) {
+    res.status(400).send({ message: "submuit all fields for registration" });
+  }
+
+  const user = await userService.create(req.body); // servico de usuário
+
+  if (!user) {
+    return res.status(400).send({ message: "Error creating user" });
+  }
+
+  res.status(201).send({
+    message: "user created successfully",
+    user: {
+      id: user._id,
+      name,
+      username,
+      email,
+      avatar,
+      background,
+    },
+  });
 };
 
 module.exports = {
-    create,
+  create,
 };
