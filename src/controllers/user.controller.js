@@ -1,5 +1,6 @@
 const userService = require("../services/user.service");
 const mongoose = require("mongoose");
+
 const create = async (req, res) => {
   const { name, username, email, password, avatar, background } = req.body;
 
@@ -48,8 +49,41 @@ const findById = async (req, res) => {
 
   res.send(user);
 };
+
+const update = async (req, res) =>{
+  const { name, username, email, password, avatar, background } = req.body;
+
+  if (!name && !username && !email && !password && !avatar && !background) {
+    res.status(400).send({ message: "submuit at least onde field for update" });
+  }
+
+  const id = req.params.id
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    res.status(400).send({message: "Indavlid ID"})
+  }
+
+  const user = await userService.findByIdService(id)
+
+  if(!user){
+    res.status(400).send({message:"user not found"})
+  }
+
+  await userService.updateService(
+    id,
+    name, 
+    username, 
+    email, 
+    password, 
+    avatar, 
+    background,
+  )
+
+  res.send({message: "user successfully updated"})
+}
+
 module.exports = {
   create,
   findAllUser,
   findById,
+  update,
 };
