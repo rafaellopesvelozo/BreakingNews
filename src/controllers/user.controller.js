@@ -1,5 +1,4 @@
 const userService = require("../services/user.service");
-const mongoose = require("mongoose");
 
 const create = async (req, res) => {
   const { name, username, email, password, avatar, background } = req.body;
@@ -29,57 +28,44 @@ const create = async (req, res) => {
 
 //buscar todos os usuario
 const findAllUser = async (req, res) => {
-  const user = await userService.findAllUser();
-  if (user.length === 0) {
+  const users = await userService.findAllUser();
+
+  if (users.length === 0) {
     return res.status(400).send({ message: "there are no registared users" });
   }
-  res.send(user);
+
+  res.send(users);
 };
 
 //buscar usuario por id
 const findById = async (req, res) => {
-  const id = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({ message: "Invalid ID" });
-  }
-  const user = await userService.findByIdService(id);
-  if (!user) {
-    return res.status(400).send({ message: "user not found" });
-  }
+  const user = req.user;
 
   res.send(user);
 };
 
-const update = async (req, res) =>{
+//atualizar usuário
+const update = async (req, res) => {
   const { name, username, email, password, avatar, background } = req.body;
 
   if (!name && !username && !email && !password && !avatar && !background) {
     res.status(400).send({ message: "submuit at least onde field for update" });
   }
 
-  const id = req.params.id
-  if(!mongoose.Types.ObjectId.isValid(id)){
-    res.status(400).send({message: "Indavlid ID"})
-  }
-
-  const user = await userService.findByIdService(id)
-
-  if(!user){
-    res.status(400).send({message:"user not found"})
-  }
+  const { id, user } = req;
 
   await userService.updateService(
     id,
-    name, 
-    username, 
-    email, 
-    password, 
-    avatar, 
-    background,
-  )
+    name,
+    username,
+    email,
+    password,
+    avatar,
+    background
+  );
 
-  res.send({message: "user successfully updated"})
-}
+  res.send({ message: "user successfully updated" });
+};
 
 module.exports = {
   create,
