@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import User from "./user";
 
 const NewsSchema = new mongoose.Schema({
   title: {
@@ -23,7 +22,7 @@ const NewsSchema = new mongoose.Schema({
     ref: "User",
     require: true,
   },
-  like: {
+  likes: {
     type: Array,
     require: true,
   },
