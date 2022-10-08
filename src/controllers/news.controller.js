@@ -2,9 +2,9 @@ import { createService, findAllService } from "../services/news.service.js";
 
 const create = async (req, res) => {
   try {
-    const { title, text, banner } = req.body;
+    const { title, banner, text } = req.body;
 
-    if (!title || !text || !banner) {
+    if (!title || !banner || !text) {
       res.status(400).send({ message: "submit all fields for registration" });
     }
 
@@ -12,14 +12,12 @@ const create = async (req, res) => {
       title,
       text,
       banner,
-      user: { _id: "63363aed13d229de934646e3" },
+      user: req.userId,
     });
 
     res.send(201);
-    
   } catch (err) {
     res.status(500).send({ message: err.message });
-    
   }
 };
 
