@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const connectDatabase = () => {
   console.log("wait connect to the database");
-
   mongoose
     .connect( process.env.MONGODB_URI ,
       {
